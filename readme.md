@@ -93,7 +93,7 @@ console.log(double(3.1));
 ```
 
 #### Surely.add(object)
-You can also add types by using the `add` method with an object that contains key names and function values. Internally, `surely` uses this method to add the default types.
+You can also add types by using the `add` method with an object that contains key names and function values. Internally, `surely` uses this method to add the **Default Types**.
 ```javascript
 var Surely = require('surely');
 
@@ -116,7 +116,7 @@ Surely uses a [builder pattern](http://addyosmani.com/resources/essentialjsdesig
 
 #### Type(name, [defaultValue])
 
-Each `type` (from the last of **Default Types** above) is a method that can be called with one required `name` argument and one optional `defaultValue` argument. To make an argument optional, append a `?` to the end of the `name` argument.
+Each `type` (from the list of **Default Types** above) is a method that can be called with one required `name` argument and one optional `defaultValue` argument. To make an argument optional, append a `?` to the end of the `name` argument.
 
 ```javascript
 var Surely = require('surely');
@@ -124,7 +124,7 @@ var Surely = require('surely');
 Surely
   .string('message')                // 'message' string param
   .object('data?')                  // 'data' object param that is optional
-  .function('logger', console.log)  // a logging function that defaults to console.log
+  .func('logger', console.log)  // a logging function that defaults to console.log
   .wrap(
 function(message, opt_data, logger) {
   if (opt_data) {
