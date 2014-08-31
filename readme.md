@@ -31,9 +31,9 @@ var read = Surely
             .callback('callback') // Second/Third argument must be a callback function
             .wrap(fs.readFile);
 
-read(null, function(err, data) {
+read(null, {}, function(err, data) {
   console.log(err);
-  // [TypeError: Expected string for "filename"]
+  // [Error: Missing parameter: filename]
 });
 
 

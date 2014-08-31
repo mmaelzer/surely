@@ -63,7 +63,7 @@ Surely.prototype._buildArg = function(name, type, opt_default) {
   return {
     type: type,
     name: name.replace(/\?/g, ''),
-    optional: /\?$/.test(name) || arguments.length === 3,
+    optional: /\?$/.test(name) || !_.isUndefined(opt_default),
     default: opt_default
   };
 };
@@ -180,7 +180,6 @@ Surely.prototype._parseArguments = function(argsToParse) {
     return new Error('Incorrect number of parameters. Expected ' +
                      required + ' found ' + argsToParse.length + '.');
   }
-
   var parsedArgs = [];
   for (var i = 0; i < this.args.length; i++) {
     var arg = this.args[i];
