@@ -116,7 +116,7 @@ Surely uses a [builder pattern](http://addyosmani.com/resources/essentialjsdesig
 
 #### Type(name, [defaultValue])
 
-Each `type` (from the list of **Default Types** above) is a method that can be called with one required `name` argument and one optional `defaultValue` argument. To make an argument optional, append a `?` to the end of the `name` argument.
+Each `type` (from the list of **Default Types** above) is a method that is called with one required `name` argument and one optional `defaultValue` argument. To make an argument optional, append a `?` to the end of the `name`.
 
 ```javascript
 var Surely = require('surely');
