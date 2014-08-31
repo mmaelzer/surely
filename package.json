@@ -1,0 +1,33 @@
+{
+  "name": "surely",
+  "version": "0.1.0",
+  "description": "Type cop",
+  "main": "surely.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mmaelzer/surely"
+  },
+  "keywords": [
+    "type",
+    "types",
+    "static",
+    "params",
+    "parameter",
+    "arguments"
+  ],
+  "author": "Mike Maelzer <mmaelzer@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mmaelzer/surely/issues"
+  },
+  "homepage": "https://github.com/mmaelzer/surely",
+  "dependencies": {
+    "lodash": "^2.4.1"
+  },
+  "devDependencies": {
+    "tape": "^2.14.0"
+  }
+}
