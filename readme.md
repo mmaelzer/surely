@@ -166,6 +166,29 @@ log({
 //  Date overload { overload: true }
 ```
 
+#### Retains context
+Using Surely in a more Object Oriented way works, too. Scoping is preserved in wrapped functions.
+
+```javascript
+function Silo() {
+  this.populate = 5000;
+}
+
+Silo.prototype.setNumber = Surely.number('siloNumber').wrap(function(siloNumber) {
+  this.number = siloNumber;
+});
+
+var silo = new Silo();
+
+console.log(silo.number);
+// undefined
+silo.setNumber(18);
+
+console.log(silo.number);
+// 18
+
+```
+
 
 The MIT License
 ===============
