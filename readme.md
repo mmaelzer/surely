@@ -5,13 +5,16 @@ Can I add runtime type checking to JavaScript?
   
 Surely you can't be serious.  
   
-I am serious... and don't call me surely.
+I am serious... and don't call me surely.  
+  
+[![build status](https://secure.travis-ci.org/mmaelzer/surely.png)](http://travis-ci.org/mmaelzer/surely)
 
 
 ### Install
 ```
 npm install surely
 ```  
+
 
 ----------------------------
 
@@ -43,6 +46,20 @@ var data = readSync(['foo.txt', 'bar.tar.gz']);
 console.log(data);
 // [TypeError: Expected string for "filename"]
 
+
+// --- Calling wrapped functions with objects ---
+var values = Surely.number('num').string('str').regex('reg').wrap(function(num, str, reg) {
+  return [num, str, reg];
+});
+
+var myvals = values({
+  num: 123,
+  str: 'foo',
+  reg: /^this\sis\sregex$/
+});
+
+console.log(myvals);
+// [123, 'foo', /^this\sis\sregex$]
 
 // --- Using defaults ---
 var random = Surely.number('min', 0).number('max', 100).wrap(function(min, max) {
@@ -121,10 +138,10 @@ Each `type` (from the list of **Default Types** above) is a method that is calle
 ```javascript
 var Surely = require('surely');
 
-Surely
+var log = Surely
   .string('message')                // 'message' string param
   .object('data?')                  // 'data' object param that is optional
-  .func('logger', console.log)  // a logging function that defaults to console.log
+  .func('logger', console.log)      // a logging function that defaults to console.log
   .wrap(
 function(message, opt_data, logger) {
   if (opt_data) {
@@ -133,6 +150,17 @@ function(message, opt_data, logger) {
     logger(message);
   }
 });
+
+// Call log with parameters
+log('hello there');
+// hello there
+
+// Call log with an object
+log({
+  message: 'Data overload',
+  data: {overload: true}
+});
+//  Date overload { overload: true }
 ```
 
 

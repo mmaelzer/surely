@@ -149,6 +149,8 @@ Surely.prototype.parse = function(args) {
 Surely.prototype._firstArgIsObjectWithParams = function(args) {
   return args.length === 1 &&
          _.isObject(args[0]) &&
+         !_.isDate(args[0]) &&
+         !_.isArray(args[0]) &&
          this.args[0].type !== 'object';
 };
 
@@ -184,7 +186,6 @@ Surely.prototype._parseArguments = function(argsToParse) {
   for (var i = 0; i < this.args.length; i++) {
     var arg = this.args[i];
     var val = argsToParse[i];
-
     if (this._testValueWithType(val, arg.type)) {
       parsedArgs.push(val);
     } else if (arg.optional && this._notValue(val)) {
