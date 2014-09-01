@@ -29,9 +29,9 @@ var Surely = require('surely');
 
 // --- Asynchronous error generation ---
 var read = Surely
-            .string('filename')   // First argument must be a string
-            .object('options?')   // Second argument can optionally be an object
-            .callback('callback') // Second/Third argument must be a callback function
+            .string('filename')   // First argument is a string
+            .object('options')    // Second argument is an object
+            .callback('callback') // Second/Third argument is a callback function
             .wrap(fs.readFile);
 
 read(null, {}, function(err, data) {
@@ -41,7 +41,10 @@ read(null, {}, function(err, data) {
 
 
 // --- Synchronous error generation ---
-var readSync = Surely.string('filename').object('options?').wrap(fs.readFileSync);
+var readSync = Surely
+                .string('filename')     // First argument is a string
+                .object('options?')     // Second argument is an optional object
+                .wrap(fs.readFileSync);
 var data = readSync(['foo.txt', 'bar.tar.gz']);
 console.log(data);
 // [TypeError: Expected string for "filename"]
