@@ -5,7 +5,7 @@ Can I add runtime type checking to JavaScript?
   
 Surely you can't be serious.  
   
-I am serious... and don't call me surely.  
+I am serious... and don't call me Shirley.  
   
 [![build status](https://secure.travis-ci.org/mmaelzer/surely.png)](http://travis-ci.org/mmaelzer/surely)
 
