@@ -15,9 +15,7 @@ I am serious... and don't call me Shirley.
 npm install surely
 ```  
 
-
 ----------------------------
-
 
 Example
 --------
