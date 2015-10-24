@@ -116,13 +116,15 @@ module.exports.testErrors = function(t) {
 
   var str3 = concat({
     prefix: 'pre',
-    word: 'fix',
-    suffix: 'er'
+    word: 'fix'
   });
-  t.equal(str3, 'prefixer');
+  t.equal(str3, 'prefix');
 
-  var str4 = concat({ prefix: 'pre' });
-  t.ok(str4 instanceof Error, 'Surely returns an error if a required parameter is missing in an arguments objects');
+  var str4 = concat({
+    prefix: 'pre',
+    foo: 'bar'
+  });
+  t.ok(str4 instanceof Error, 'Surely returns an error if a required parameter is missing in an arguments object but the argument object has the correct number of keys');
 
   t.done();
 };
