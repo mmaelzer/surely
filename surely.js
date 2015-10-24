@@ -107,11 +107,6 @@ Surely.prototype._handleError = function(err, args) {
   }
 };
 
-/** @return {Boolean} **/
-Surely.prototype._hasCallback = function() {
-  return _.chain(this.args).pluck('type').contains('callback').value();
-};
-
 /**
  *  @param {Array.<Object>} args
  *  @return {Function}

@@ -95,3 +95,34 @@ module.exports.testDefaultParams = function(t) {
 
   t.done();
 };
+
+module.exports.testErrors = function(t) {
+  var concat = Surely
+                .string('prefix')
+                .string('word')
+                .string('suffix', '')
+                .wrap(function(prefix, name, suffix) {
+                  return prefix + name + suffix;
+                });
+
+  var str1 = concat('pre');
+  t.ok(str1 instanceof Error, 'Surely returns an error if the number of expected args is not equal to the number of args passed');
+
+  var str2 = concat({
+    prefix: 123,
+    word: ' are numbers'
+  });
+  t.ok(str2 instanceof Error, 'Surely returns an error if any of the arguments do not meet the expected type');
+
+  var str3 = concat({
+    prefix: 'pre',
+    word: 'fix',
+    suffix: 'er'
+  });
+  t.equal(str3, 'prefixer');
+
+  var str4 = concat({ prefix: 'pre' });
+  t.ok(str4 instanceof Error, 'Surely returns an error if a required parameter is missing in an arguments objects');
+
+  t.done();
+};
