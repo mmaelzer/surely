@@ -4,8 +4,7 @@
   "description": "Type cop",
   "main": "surely.js",
   "scripts": {
-    "test": "node_modules/.bin/nodeunit test.js",
-    "coveralls": "node_modules/.bin/jscoverage surely.js && USE_COVERAGE=1 node_modules/.bin/nodeunit --reporter=lcov test.js | node_modules/.bin/coveralls"
+    "test": "node --test test.js"
   },
   "repository": {
     "type": "git",
@@ -25,12 +24,11 @@
     "url": "https://github.com/mmaelzer/surely/issues"
   },
   "homepage": "https://github.com/mmaelzer/surely",
-  "dependencies": {
-    "lodash": "^2.4.1"
+  "engines": {
+    "node": ">=18"
   },
-  "devDependencies": {
-    "coveralls": "^2.11.4",
-    "jscoverage": "^0.6.0",
-    "nodeunit": "^0.9.1"
-  }
+  "files": [
+    "surely.js",
+    "readme.md"
+  ]
 }
