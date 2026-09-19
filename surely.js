@@ -1,4 +1,58 @@
-var _ = require('lodash');
+/**
+ *  Type predicates, previously lodash's.
+ *
+ *  lodash was a runtime dependency for these alone, and it carried five open
+ *  advisories including a critical prototype pollution. Every predicate used
+ *  here is a line or two of standard JavaScript, so the dependency is gone.
+ *
+ *  The semantics are lodash's, not the obvious ones, because `Surely.types` is
+ *  public API and these are the functions it exposes. In particular `isObject`
+ *  is true for arrays, functions and dates -- it asks "is this a non-primitive",
+ *  which is why callers below have to exclude arrays and dates explicitly. The
+ *  tag checks accept boxed primitives (`new String('x')`) for the same reason.
+ */
+var toString = Object.prototype.toString;
+
+function tagged(tag) {
+  return '[object ' + tag + ']';
+}
+
+function isString(value) {
+  return typeof value === 'string' || toString.call(value) === tagged('String');
+}
+
+function isBoolean(value) {
+  return value === true || value === false || toString.call(value) === tagged('Boolean');
+}
+
+function isNumber(value) {
+  return typeof value === 'number' || toString.call(value) === tagged('Number');
+}
+
+function isDate(value) {
+  return toString.call(value) === tagged('Date');
+}
+
+function isRegExp(value) {
+  return toString.call(value) === tagged('RegExp');
+}
+
+function isFunction(value) {
+  return typeof value === 'function';
+}
+
+function isObject(value) {
+  var type = typeof value;
+  return !!value && (type === 'object' || type === 'function');
+}
+
+function isUndefined(value) {
+  return value === undefined;
+}
+
+function isNull(value) {
+  return value === null;
+}
 
 /**
  *  @param {String=} opt_argName
@@ -17,7 +71,7 @@ function Surely(opt_argName, opt_type, opt_default) {
  */
 Surely.add = function(type, testFunction) {
   var obj = type;
-  if (_.isString(type)) {
+  if (isString(type)) {
     obj = {};
     obj[type] = testFunction;
   }
@@ -42,14 +96,14 @@ Surely.types = {};
 // Default type list
 Surely.add({
   'array': Array.isArray,
-  'bool': _.isBoolean,
-  'callback': _.isFunction,
-  'date': _.isDate,
-  'func': _.isFunction,
-  'number': _.isNumber,
-  'object': _.isObject,
-  'regex': _.isRegExp,
-  'string': _.isString
+  'bool': isBoolean,
+  'callback': isFunction,
+  'date': isDate,
+  'func': isFunction,
+  'number': isNumber,
+  'object': isObject,
+  'regex': isRegExp,
+  'string': isString
 });
 
 /**
@@ -63,7 +117,7 @@ Surely.prototype._buildArg = function(name, type, opt_default) {
   return {
     type: type,
     name: name.replace(/\?/g, ''),
-    optional: /\?$/.test(name) || !_.isUndefined(opt_default),
+    optional: /\?$/.test(name) || !isUndefined(opt_default),
     default: opt_default
   };
 };
@@ -112,12 +166,11 @@ Surely.prototype._handleError = function(err, args) {
  *  @return {Function}
  */
 Surely.prototype._getCallbackFromArguments = function(args) {
-  var indexOfCallback = _.chain(this.args)
-                          .pluck('type')
-                          .indexOf('callback')
-                          .value();
+  var indexOfCallback = this.args.map(function(arg) {
+    return arg.type;
+  }).indexOf('callback');
   var callback = args[indexOfCallback];
-  return _.isFunction(callback) ? callback : null;
+  return isFunction(callback) ? callback : null;
 };
 
 /**
@@ -129,8 +182,8 @@ Surely.prototype._getCallbackFromArguments = function(args) {
  *  @public
  */
 Surely.prototype.parse = function(args) {
-  if ((_.isObject(args) && !_.isArray(args)) || this._firstArgIsObjectWithParams(args)) {
-    return this._parseObject(_.isObject(args) && args.length ? args[0] : args);
+  if ((isObject(args) && !Array.isArray(args)) || this._firstArgIsObjectWithParams(args)) {
+    return this._parseObject(isObject(args) && args.length ? args[0] : args);
   } else {
     return this._parseArguments(args);
   }
@@ -143,16 +196,16 @@ Surely.prototype.parse = function(args) {
  */
 Surely.prototype._firstArgIsObjectWithParams = function(args) {
   return args.length === 1 &&
-         _.isObject(args[0]) &&
-         !_.isDate(args[0]) &&
-         !_.isArray(args[0]) &&
+         isObject(args[0]) &&
+         !isDate(args[0]) &&
+         !Array.isArray(args[0]) &&
          this.args[0].type !== 'object';
 };
 
 /** @return {Number} **/
 Surely.prototype._getRequiredArgsLength = function() {
-  return _.reject(this.args, function(arg) {
-    return arg.optional;
+  return this.args.filter(function(arg) {
+    return !arg.optional;
   }).length;
 };
 
@@ -161,7 +214,7 @@ Surely.prototype._getRequiredArgsLength = function() {
  *  @return {Boolean}
  */
 Surely.prototype._notValue = function(val) {
-  return _.isUndefined(val) || _.isNull(val);
+  return isUndefined(val) || isNull(val);
 };
 
 /**
@@ -200,7 +253,7 @@ Surely.prototype._parseArguments = function(argsToParse) {
 Surely.prototype._parseObject = function(options) {
   // If the number of keys in the options object is less than
   // the number of args to check, the test has already failed
-  var keys = _.isObject(options) ? Object.keys(options) : [];
+  var keys = isObject(options) ? Object.keys(options) : [];
   var required = this._getRequiredArgsLength();
   if (keys.length < required) {
     return new Error('Incorrect number of parameters. Expected ' +

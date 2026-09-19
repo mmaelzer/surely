@@ -1,3 +1,4 @@
 node_modules/
 *.log
 *-cov.js
+package-lock.json

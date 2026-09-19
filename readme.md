@@ -1,14 +1,14 @@
 surely
 ======
 
+[![build status](https://github.com/mmaelzer/surely/actions/workflows/test.yml/badge.svg)](https://github.com/mmaelzer/surely/actions/workflows/test.yml)
+
 Can I add runtime type checking to JavaScript?  
   
 Surely you can't be serious.  
   
 I am serious... and don't call me Shirley.  
   
-[![build status](https://secure.travis-ci.org/mmaelzer/surely.png)](http://travis-ci.org/mmaelzer/surely)
-[![Coverage Status](https://coveralls.io/repos/mmaelzer/surely/badge.svg?branch=master&service=github)](https://coveralls.io/github/mmaelzer/surely?branch=master)
 
 ### Install
 ```
